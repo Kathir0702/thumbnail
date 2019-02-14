@@ -1,0 +1,60 @@
+npm i ng-packagr --save-dev
+add ng-package.json and public_api.ts
+
+in ng-public.json,add below lines
+{
+    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+    "lib": {
+      "entryFile": "public_api.ts"
+    },
+    "whitelistedNonPeerDependencies": [
+        "."
+      ]
+  }
+
+here, whitelistedNonPeerDependencies is used to remove all peerdependendies. ( "." for all dependencies. if we want to whitelst specific package we can use ["angular"])
+
+in public_api.ts, import your custom module,
+export * from './src/app/dds/dds/dds.module';
+
+add packagr in package.json,
+
+"scripts": {
+  "ng": "ng",
+  "start": "ng serve",
+  "build": "ng build",
+  "test": "ng test",
+  "lint": "ng lint",
+  "e2e": "ng e2e",
+  "packagr": "ng-packagr -p ng-package.json"
+},
+"private": false
+
+
+note:private should be false, so that we can publish our library
+
+npm add ng-packagr@latest @angular/compiler@latest @angular/compiler-cli@latest tsickle // need to install dependencies such as tsickle and angular compilers before running packagr
+
+npm run packagr
+
+then we can find build files inside the dist folder and we need to do tarball setup for local npm installation,
+open cmd window for dist folder and run the below command 
+
+npm pack
+
+now we can install our module locally by using npm i '../localpath/dist/app-name.0.0.0.tgz'
+
+next login into npm account
+
+npm adduser
+
+npm publish
+
+now we can use our package anywhere by using "npm i my-package --save".
+
+
+
+
+
+
+
